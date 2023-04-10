@@ -9,6 +9,30 @@ const app = express();
 //entonces se le esta diciendo que use el formato json 
 app.use(express.json());
 
+//Manera larga
+//la respuesta va a tomar la peticion, y va a tener un callbacl
+//q va a representar quien llamo a esa funcion
+//next: por cada ruta va a llamar a tos los use, q se verifica ejecuta 
+//antes del callback
+//resperencia a cada funcion, haga esto y continue
+app.use(function(req, res, next){
+    res.header("Access-Control-Allow-Origin", "*"); //permition que pueda tener una peticion desde los siguientes origenes
+    //regla de acceso q permita ciertos origenes
+    //debe corresponder a la urla q le quiera dar permiso
+    //a la respuesta agreguele este encabezado
+    res.header("Access-Control-Allow-Methods", "POST");
+    //q tipo de encabezados quiero aceptar
+    //limita la cantidad de procesamientos de encabezados q quiero
+    res.header("Access-Control-Allow-Headers", "Content-type");
+    next();//despues de q procese el encavezado siga generando la respuesta
+}
+);
+
+
+
+
+
+
 
 //Definir los entry point (puntos de entreda) de al API
 //Definir las ruta( la url) en donde va a responder nuestra api
@@ -18,7 +42,8 @@ app.use(express.json());
 //express llame a la petición post porque voy a crear una ruta q va a procesar
 //peticiones por ese método
 //el servidor esta escuchando en http://localhost:3000/ruta
-app.get(
+/*
+app.post(
     //ruto q va a tener para responder a las peticiones
     '/sumar',
     //se ejecuta la función de callback
@@ -29,6 +54,17 @@ app.get(
         console.log("Alguien esta conectandose a esta ruta!! ");
         //la mayoria de las veces se responde en formato json 
         res.json("Hola sumar ");
+    }
+);
+*/
+
+app.post(
+    '/api/sumar',
+    (req, res )=>{
+        console.log("alguien está conectándose a esta ruta!!!");
+        const {numero_1, numero_2} = req.body;
+        const resultado = parseFloat(numero_1) + parseFloat(numero_2);
+        res.json(resultado);
     }
 );
 
@@ -54,7 +90,7 @@ app.post(
 
         //res.json("Hola restar");
         //responde lo que esta en el cuerpo de la peticion
-        res.json(req.body);
+        //res.json(req.body);
     }
 );
 

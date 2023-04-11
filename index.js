@@ -1,6 +1,6 @@
 //1. Crear un objeto express - Representa la biblioteca
 const express = require('express');
-
+var cors = require('cors')
 //2. Crear un objeto que representa nuestra aplicaciónn
 //objeto q se crea cuando se instancia la biblioreca
 //representa una aplicación apartir de esa biblioteca
@@ -8,6 +8,7 @@ const app = express();
 //se le dice en que tipo de formato estan los datos qe esta recibiendo
 //entonces se le esta diciendo que use el formato json 
 app.use(express.json());
+app.use(cors());
 
 //Manera larga
 //la respuesta va a tomar la peticion, y va a tener un callbacl
@@ -23,7 +24,7 @@ app.use(function(req, res, next){
     res.header("Access-Control-Allow-Methods", "POST");
     //q tipo de encabezados quiero aceptar
     //limita la cantidad de procesamientos de encabezados q quiero
-    res.header("Access-Control-Allow-Headers", "Content-type");
+    res.header("Access-Control-Allow-Headers", "Content-Type");
     next();//despues de q procese el encavezado siga generando la respuesta
 }
 );
@@ -59,11 +60,11 @@ app.post(
 */
 
 app.post(
-    '/api/sumar',
+    '/sumar',
     (req, res )=>{
-        console.log("alguien está conectándose a esta ruta!!!");
+        console.log("alguien está conectándose a esta ruta sumar!!!");
         const {numero_1, numero_2} = req.body;
-        const resultado = parseFloat(numero_1) + parseFloat(numero_2);
+        let resultado = parseInt(numero_1) + parseInt(numero_2);
         res.json(resultado);
     }
 );
@@ -96,7 +97,7 @@ app.post(
 
 //Como queda la ruta para dividir
 app.post(
-    '/api/dividir',
+    '/dividir',
     (req, res)=>{
 
         /* Una forma
